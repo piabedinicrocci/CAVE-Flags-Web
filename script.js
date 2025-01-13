@@ -1,9 +1,20 @@
 const flagsContainer = document.getElementById('flagsContainer');
 const addFlagButton = document.getElementById('addFlag');
 const sendExperimentButton = document.getElementById('sendExperiment');
-const errorMessage = document.getElementById('error-message');
-const successMessage = document.getElementById('success-message');
-const positionErrorMessage = document.getElementById('position-error-message'); // Mensaje para campos requeridos
+const messageDiv = document.getElementById('message');
+
+// Función para mostrar mensaje
+function showMessage(text, type) {
+    messageDiv.textContent = text;
+    messageDiv.className = 'message'; // Reset clases
+    messageDiv.classList.add(type, 'show');
+}
+
+// Función para limpiar mensaje
+function clearMessage() {
+    messageDiv.textContent = '';
+    messageDiv.className = 'message';
+}
 
 // Función para crear una nueva fila de bandera
 function createFlagRow() {
@@ -11,14 +22,14 @@ function createFlagRow() {
   flagRow.className = 'flag-row';
 
   flagRow.innerHTML = `
-    <select class="color form-select" id="color">
-      <option selected>Color</option>
+    <select class="color form-select">
+      <option selected disabled>Seleccionar color</option>
       <option value="azul">Azul</option>
       <option value="rojo">Rojo</option>
     </select>
-    <input type="number" class="positionX" placeholder="Posición X" required />
-    <input type="number" class="positionZ" placeholder="Posición Z" required />
-    <button class="deleteFlag btn btn-outline-danger">X</button>
+    <input type="number" class="positionX" placeholder="X" required />
+    <input type="number" class="positionZ" placeholder="Z" required />
+    <button class="deleteFlag">×</button>
   `;
 
   flagRow.querySelector('.deleteFlag').addEventListener('click', () => {
@@ -54,15 +65,19 @@ sendExperimentButton.addEventListener('click', () => {
   const rows = document.querySelectorAll('.flag-row');
   let isValid = true;
 
-  // Limpiar mensajes previos
-  errorMessage.textContent = '';
-  positionErrorMessage.textContent = ''; // Limpiar mensaje de campos requeridos
-  successMessage.textContent = '';
+  // Limpiar mensaje previo
+  clearMessage();
+
+  // Validar escenario seleccionado
+  const scenarioSelect = document.getElementById('scenario');
+  if (!scenarioSelect.value || scenarioSelect.value === '') {
+    showMessage('Debe seleccionar un escenario.', 'error');
+    return;
+  }
 
   // Validar que haya al menos una bandera
   if (rows.length === 0) {
-    errorMessage.textContent = 'Debe agregar al menos una bandera antes de enviar.';
-    errorMessage.style.marginTop = '10px';
+    showMessage('Debe agregar al menos una bandera antes de enviar.', 'error');
     return;
   }
 
@@ -78,8 +93,7 @@ sendExperimentButton.addEventListener('click', () => {
       isValid = false;
       positionXInput.style.borderColor = 'red';
       positionZInput.style.borderColor = 'red';
-      positionErrorMessage.textContent = 'Los campos de posición X y Z son requeridos.';
-      positionErrorMessage.style.marginTop = '10px';
+      showMessage('Los campos de posición X y Z son requeridos.', 'error');
     } else {
       positionXInput.style.borderColor = '';
       positionZInput.style.borderColor = '';
@@ -90,8 +104,7 @@ sendExperimentButton.addEventListener('click', () => {
       isValid = false;
       positionXInput.style.borderColor = 'red';
       positionZInput.style.borderColor = 'red';
-      errorMessage.textContent = 'Una bandera no puede estar en la posición (0,0).';
-      errorMessage.style.marginTop = '10px';
+      showMessage('Una bandera no puede estar en la posición (0,0).', 'error');
     }
   });
 
@@ -104,7 +117,7 @@ sendExperimentButton.addEventListener('click', () => {
     scenes: [
       {
         id: 0,
-        environment: document.getElementById('scenario').value,
+        environment: scenarioSelect.value,
         prefabs: [],
         steps: []
       }
@@ -128,5 +141,5 @@ sendExperimentButton.addEventListener('click', () => {
   downloadJSON('experiment.json', experiment);
 
   // Mostrar mensaje de éxito
-  successMessage.textContent = 'Formulario enviado correctamente. El archivo experiment.json se ha descargado.';
+  showMessage('Formulario enviado correctamente. El archivo experiment.json se ha descargado.', 'success');
 });

@@ -1,88 +1,156 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Lexend;
+    font-family: 'Lexend', sans-serif;
+    box-sizing: border-box;
 }
 
 body {
-    background-image: url("./img/background.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    height: 100vh; /* Asegura que el fondo cubra toda la altura de la pantalla */
-    margin: 0; /* Elimina márgenes por defecto */
-    display: flex;
-}
-
-.flag-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.flag-row input, .flag-row select {
-    padding: 5px;
-}
-
-.flag-row button {
-    padding: 5px 10px;
-}
-
-.flag-row button, #addFlag, #sendExperiment {
-    cursor: pointer;
-    font-weight: bold;
-}
-
-#addFlag, #sendExperiment {
-    margin-top: 10px;
-    padding: 10px;
-}
-
-#error-message, #success-message, #position-error-message {
-    color: red;
-}
-
-#success-message {
-    color: green;
-}
-
-.seccion_escenario {
-    display: flex;
-    width: 300px;
-    /* justify-content: center;
-    justify-items: center;
-    align-items: center;
-    align-content: center;
-    margin: 0 auto; */
-}
-
-.seccion_banderas {
-    display: inline-flexbox;
-}
-
-.seccion_banderas div {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    /* background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%); */
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-}
-
-#color {
-    width: 100px;
-}
-
-.positionX, .positionZ {
-    border-radius: 5px;
-    border: 1px solid gainsboro;
-}
-
-#flagsContainer {
-    margin: 0 auto;
-    display: block;
+    align-items: center;
+    padding: 2rem;
 }
 
 .form {
-    justify-items: center;
-    align-content: center;
-    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
 }
 
+.seccion_escenario {
+    margin-bottom: 1.5rem;
+}
+
+.seccion_banderas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+#flagsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.flag-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 2fr) minmax(80px, 1fr) minmax(80px, 1fr) 50px;
+    gap: 0.8rem;
+    align-items: center;
+    width: 100%;
+    padding: 0.3rem 0;
+}
+
+.flag-row input, 
+.flag-row select,
+.form-select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 0;
+}
+
+.flag-row input:focus, 
+.flag-row select:focus,
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+
+#addFlag, 
+#sendExperiment {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#addFlag {
+    background: #f3f6fa;
+    color: #2965a5;
+}
+
+#sendExperiment {
+    background: #2965a5;
+    color: white;
+}
+
+#addFlag:hover {
+    background: #e9ecef;
+}
+
+#sendExperiment:hover {
+    background: #0c4683;
+}
+
+.deleteFlag {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background: transparent;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.deleteFlag:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* Estilos base para el mensaje */
+.message {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* Estilos para mensaje de error */
+.message.error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}
+
+/* Estilos para mensaje de éxito */
+.message.success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+/* Clase para mostrar el mensaje con animación */
+.message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form h1 {
+    color: #000000;
+}
   

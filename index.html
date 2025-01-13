@@ -5,34 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generador de Experimentos</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/icon.png">
 </head>
 <body>
 
     <div class="form">
+        <h1 class="text-center mb-4">Generador de Experimentos</h1>
+        
         <section class="seccion_escenario">
-            <!-- <label id="label_scenario" for="scenario">Escenario</label> -->
             <select id="scenario" class="form-select">
-                <option selected>Escenario</option>
-                <option value="Escenario">Arena</option>
+                <option selected disabled value="">Seleccionar escenario</option>
+                <option value="Arena">Arena</option>
             </select>
         </section>
 
         <section class="seccion_banderas">
-            <div><button id="addFlag" class="btn btn-outline-dark">Agregar bandera</button></div>
             <div id="flagsContainer"></div>
-            <div><button id="sendExperiment" class="btn btn-outline-success">Enviar experimento</button></div>
+            
+            <button id="addFlag" class="btn">
+                <i class="fas fa-plus"></i> Agregar bandera
+            </button>
+            
+            <button id="sendExperiment" class="btn">
+                Generar experimento
+            </button>
 
-            <div id="error-message"></div>
-            <div id="success-message"></div>
-            <div id="position-error-message"></div>
+            <div id="message" class="message"></div>
         </section>
     </div>
 
+    <script src="https://kit.fontawesome.com/your-code.js"></script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
