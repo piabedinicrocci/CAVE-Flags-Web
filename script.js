@@ -104,10 +104,20 @@ sendExperimentButton.addEventListener('click', async () => {
 
   // Validar que todos los campos estén llenos y que no haya posición X y Z en (0,0)
   rows.forEach((row) => {
+    const colorSelect = row.querySelector('.color');
     const positionXInput = row.querySelector('.positionX');
     const positionZInput = row.querySelector('.positionZ');
     const positionX = parseFloat(positionXInput.value);
     const positionZ = parseFloat(positionZInput.value);
+
+      // Validación del color
+      if (!colorSelect.value || colorSelect.value === 'Seleccionar color') {
+        isValid = false;
+        colorSelect.style.borderColor = 'red';
+        showMessage('Debe seleccionar un color para todas las banderas.', 'error');
+    } else {
+        colorSelect.style.borderColor = '';
+    }
 
     // Validación de campos vacíos
     if (!positionXInput.value.trim() || !positionZInput.value.trim()) {
