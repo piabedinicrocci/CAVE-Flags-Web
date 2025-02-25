@@ -51,22 +51,43 @@ addFlagButton.addEventListener('click', () => {
   flagsContainer.appendChild(newFlag);
 });
 
-// Función para descargar un archivo JSON
-function downloadJSON(filename, jsonData) {
-  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
+// Reemplazar la función downloadJSON por sendToDatabase
+async function sendToDatabase(experimentData) {
+    try {
+        const response = await fetch('save_experiment.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(experimentData)
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            showMessage('Experimento guardado correctamente en la base de datos.', 'success');
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        showMessage('Error al guardar el experimento: ' + error.message, 'error');
+    }
 }
 
 // Enviar experimento
-sendExperimentButton.addEventListener('click', () => {
+sendExperimentButton.addEventListener('click', async () => {
   const rows = document.querySelectorAll('.flag-row');
   let isValid = true;
 
   // Limpiar mensaje previo
   clearMessage();
+
+  // Validar DNI
+  const dniInput = document.getElementById('dni');
+  if (!dniInput.value.trim()) {
+    showMessage('Debe ingresar un DNI.', 'error');
+    return;
+  }
 
   // Validar escenario seleccionado
   const scenarioSelect = document.getElementById('scenario');
@@ -112,8 +133,9 @@ sendExperimentButton.addEventListener('click', () => {
     return;
   }
 
-  // Generar el JSON si es válido
+  // Generar el objeto de datos
   const experiment = {
+    dni: parseInt(dniInput.value),
     scenes: [
       {
         id: 0,
@@ -137,9 +159,6 @@ sendExperimentButton.addEventListener('click', () => {
     experiment.scenes[0].steps.push({ target: index, action: 0 });
   });
 
-  // Descargar el archivo JSON
-  downloadJSON('experiment.json', experiment);
-
-  // Mostrar mensaje de éxito
-  showMessage('Formulario enviado correctamente. El archivo experiment.json se ha descargado.', 'success');
+  // Enviar datos a la base de datos
+  await sendToDatabase(experiment);
 });
