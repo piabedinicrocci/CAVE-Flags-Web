@@ -2,6 +2,7 @@ const flagsContainer = document.getElementById('flagsContainer');
 const addFlagButton = document.getElementById('addFlag');
 const sendExperimentButton = document.getElementById('sendExperiment');
 const messageDiv = document.getElementById('message');
+const startExperimentButton = document.getElementById('startExperiment');
 
 // Función para mostrar mensaje
 function showMessage(text, type) {
@@ -172,3 +173,5 @@ sendExperimentButton.addEventListener('click', async () => {
   // Enviar datos a la base de datos
   await sendToDatabase(experiment);
 });
+
+
