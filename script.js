@@ -52,35 +52,79 @@ addFlagButton.addEventListener('click', () => {
   flagsContainer.appendChild(newFlag);
 });
 
+async function checkDniExists(dni) {
+    try {
+        const response = await fetch(`http://localhost:3000/person/${dni}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.status === 204) {
+            return false; // DNI no existe
+        }
+        return true; // DNI existe
+    } catch (error) {
+        console.error('Error:', error);
+        throw new Error('Error al verificar el DNI');
+    }
+}
+
+function clearForm() {
+    // Limpiar DNI
+    document.getElementById('dni').value = '';
+    
+    // Limpiar el select de escenario
+    document.getElementById('scenario').value = '';
+    
+    // Eliminar todas las filas de banderas excepto una
+    const rows = document.querySelectorAll('.flag-row');
+    rows.forEach((row, index) => {
+        if (index > 0) { // Mantener solo la primera fila
+            row.remove();
+        }
+    });
+    
+    // Limpiar la primera fila de bandera
+    if (rows.length > 0) {
+        const firstRow = rows[0];
+        firstRow.querySelector('.color').value = 'Seleccionar color';
+        firstRow.querySelector('.positionX').value = '';
+        firstRow.querySelector('.positionZ').value = '';
+    }
+}
+
 async function sendToDatabase(dni, flags) {
-  try {
-      const response = await fetch('http://localhost:3000/learning', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-              dni: dni,
-              flags: flags
-          })
-      });
+    try {
+        const response = await fetch('http://localhost:3000/learning', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                dni: dni,
+                flags: flags
+            })
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-          showMessage('Experimento guardado correctamente', 'success');
-          document.getElementById('startExperiment').style.display = 'block';
-          return true;
-      } else {
-          showMessage('Error al guardar el experimento', 'error');
-          return false;
-      }
-  } catch (error) {
-      console.error('Error:', error);
-      showMessage('Error al guardar el experimento', 'error');
-      return false;
-  }
+        if (data.success) {
+            showMessage('Experimento guardado correctamente', 'success');
+            document.getElementById('startExperiment').style.display = 'block';
+            clearForm(); // Limpiamos el formulario después de un envío exitoso
+            return true;
+        } else {
+            showMessage('Error al guardar el experimento', 'error');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('Error al guardar el experimento', 'error');
+        return false;
+    }
 }
 
 // Enviar experimento
@@ -96,6 +140,14 @@ sendExperimentButton.addEventListener('click', async () => {
   if (!dniInput.value.trim()) {
       showMessage('Debe ingresar un DNI.', 'error');
       return;
+  }
+
+  // Verificar si el DNI ya existe
+  let dniExists = checkDniExists(dni);
+
+  if (!dniExists) {
+    showMessage('No existe una persona con ese DNI, primero cargala', 'error');
+    return;
   }
 
   // Validar que haya al menos una bandera
@@ -161,6 +213,7 @@ sendExperimentButton.addEventListener('click', async () => {
 
   // Enviar datos al backend
   await sendToDatabase(parseInt(dniInput.value), flags);
+  
 });
 
 

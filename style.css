@@ -72,7 +72,10 @@ body {
 #addFlag, 
 #sendExperiment,
 #startExperiment,
-#initExperiment {
+#initExperiment,
+#addPerson,
+#btnAgregar
+{
     width: 100%;
     padding: 0.8rem;
     border: none;
@@ -86,16 +89,16 @@ body {
     color: #2965a5;
 }
 
-#sendExperiment, #startExperiment, #initExperiment {
-    background: #2965a5;
-    color: white;
-}
-
 #addFlag:hover {
     background: #e9ecef;
 }
 
-#sendExperiment:hover, #startExperiment:hover, #initExperiment:hover {
+#sendExperiment, #startExperiment, #initExperiment, #startExperiment, #addPerson, #btnAgregar {
+    background: #2965a5;
+    color: white;
+}
+
+#sendExperiment:hover, #startExperiment:hover, #initExperiment:hover, #startExperiment:hover, #addPerson:hover, #btnAgregar:hover {
     background: #0c4683;
 }
 
@@ -182,7 +185,6 @@ a, a:visited, a:hover, a:active {
 .seccion_repeticiones {
     margin-bottom: 1.5rem;
 }
-
 
 
   
